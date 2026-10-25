@@ -22,7 +22,7 @@ export default function Footer() {
             <ul className="mt-4 space-y-1 text-xs text-ink/50">
               {practices.map((p) => (
                 <li key={p.person}>
-                  {p.businessName} · {p.phoneDisplay} · {p.email}
+                  {p.businessName} · {p.email}
                 </li>
               ))}
             </ul>

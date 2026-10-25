@@ -1,8 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import SectionTitle from './SectionTitle'
-import { WhatsAppIcon } from './Hero'
 import { InstagramIcon } from './Gallery'
-import { contact, practices, services, whatsappLinkFor } from '../data/site'
+import { contact, practices, services } from '../data/site'
 
 type Status = 'idle' | 'sending' | 'success' | 'error'
 
@@ -14,21 +13,22 @@ export default function Contact() {
     e.preventDefault()
     const form = e.currentTarget
 
-    if (contact.formspreeId === 'PLACEHOLDER') {
+    const formData = new FormData(form)
+    const person = formData.get('fizyoterapist')
+    const practice = practices.find((p) => p.person === person)
+    if (!practice?.formspreeId) {
       setStatus('error')
-      setErrorMsg(
-        'Form servisi henüz yapılandırılmadı. Lütfen WhatsApp veya telefon ile iletişime geçin.',
-      )
+      setErrorMsg('Lütfen bir fizyoterapist seçin.')
       return
     }
 
     setStatus('sending')
     setErrorMsg('')
     try {
-      const res = await fetch(`https://formspree.io/f/${contact.formspreeId}`, {
+      const res = await fetch(`https://formspree.io/f/${practice.formspreeId}`, {
         method: 'POST',
         headers: { Accept: 'application/json' },
-        body: new FormData(form),
+        body: formData,
       })
       if (res.ok) {
         setStatus('success')
@@ -55,7 +55,7 @@ export default function Contact() {
           eyebrow="İletişim & Randevu"
           title="İlk adımı"
           accent="birlikte atalım."
-          description="Aynı klinik, iki ayrı fizyoterapist. Formu doldurun ya da doğrudan WhatsApp üzerinden yazın."
+          description="Aynı klinik, iki ayrı fizyoterapist. Formu doldurun veya e-posta ile ulaşın."
         />
 
         {/* Two practices */}
@@ -69,20 +69,8 @@ export default function Contact() {
               <p className="eyebrow">{p.title}</p>
               <h3 className="display mt-2 text-3xl text-ink sm:text-4xl">{p.person}</h3>
               <p className="mt-1 text-xs text-ink/45">{p.businessName}</p>
-              <div className="mt-5 flex flex-col gap-2">
-                <a href={whatsappLinkFor(p)} target="_blank" rel="noreferrer" className="btn-primary justify-between !px-5 !py-3.5">
-                  <span className="flex items-center gap-3">
-                    <WhatsAppIcon className="h-5 w-5" /> WhatsApp
-                  </span>
-                  <Arrow />
-                </a>
-                <a href={`tel:${p.phoneE164}`} className="btn-outline justify-between !px-5 !py-3.5">
-                  <span className="flex items-center gap-3">
-                    <PhoneIcon /> {p.phoneDisplay}
-                  </span>
-                  <Arrow />
-                </a>
-                <a href={`mailto:${p.email}`} className="btn-outline justify-between !px-5 !py-3.5">
+              <div className="mt-5">
+                <a href={`mailto:${p.email}`} className="btn-primary justify-between !px-5 !py-3.5">
                   <span className="flex items-center gap-3">
                     <MailIcon /> {p.email}
                   </span>
@@ -130,11 +118,8 @@ export default function Contact() {
                 <Field label="Ad Soyad" htmlFor="name">
                   <input id="name" name="name" required className="input" placeholder="Adınız Soyadınız" autoComplete="name" />
                 </Field>
-                <Field label="Telefon" htmlFor="phone">
-                  <input id="phone" name="phone" type="tel" required className="input" placeholder="05xx xxx xx xx" autoComplete="tel" />
-                </Field>
                 <Field label="E-posta" htmlFor="email">
-                  <input id="email" name="email" type="email" className="input" placeholder="ornek@eposta.com" autoComplete="email" />
+                  <input id="email" name="email" type="email" required className="input" placeholder="ornek@eposta.com" autoComplete="email" />
                 </Field>
                 <Field label="İlgilendiğiniz hizmet" htmlFor="service">
                   <select id="service" name="service" className="input appearance-none" defaultValue="">
@@ -275,14 +260,3 @@ function MailIcon() {
   )
 }
 
-function PhoneIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
-      <path
-        d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  )
-}

@@ -9,6 +9,9 @@ dist-ssr
 # Vite
 .vite
 
+# Vercel
+.vercel
+
 # TypeScript
 *.tsbuildinfo
 

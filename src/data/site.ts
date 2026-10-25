@@ -14,7 +14,7 @@ export const brand = {
 
 /**
  * Klinik tek, işletme iki: her fizyoterapistin kendi "Özel Sağlık Meslek Hizmet Birimi" vardır.
- * Telefon ve e-posta kişiye özel, adres ve çalışma saatleri ortaktır.
+ * E-posta kişiye özel, adres ve çalışma saatleri ortaktır.
  */
 export type Practice = {
   /** Kısa ad (butonlarda görünür) */
@@ -22,10 +22,9 @@ export type Practice = {
   /** Resmi işletme adı */
   businessName: string
   title: string
-  phoneDisplay: string
-  phoneE164: string
-  whatsappE164: string
   email: string
+  /** Formspree form ID (https://formspree.io/f/XXXX) */
+  formspreeId: string
 }
 
 export const practices: Practice[] = [
@@ -33,28 +32,17 @@ export const practices: Practice[] = [
     person: 'Berrak Deniz Yılmaz',
     businessName: 'Berrak Deniz Yılmaz Özel Sağlık Meslek Hizmet Birimi',
     title: 'Uzman Fizyoterapist',
-    // --- yer tutucu, gerçek bilgilerle değiştirin ---
-    phoneDisplay: '+90 (5xx) xxx xx x1',
-    phoneE164: '+905000000001',
-    whatsappE164: '905000000001',
-    email: 'deniz@ornek.com',
+    email: 'bdenizyilmaz1@gmail.com',
+    formspreeId: 'xzeedljg',
   },
   {
     person: 'Bengüsu Ekmen',
     businessName: 'Bengüsu Ekmen Özel Sağlık Meslek Hizmet Birimi',
     title: 'Fizyoterapist',
-    // --- yer tutucu, gerçek bilgilerle değiştirin ---
-    phoneDisplay: '+90 (5xx) xxx xx x2',
-    phoneE164: '+905000000002',
-    whatsappE164: '905000000002',
-    email: 'bengusu@ornek.com',
+    email: 'bengusuekmeenn@gmail.com',
+    formspreeId: 'xgaaojnn',
   },
 ]
-
-export const whatsappMessage = 'Merhaba, randevu almak istiyorum.'
-
-export const whatsappLinkFor = (p: Practice) =>
-  `https://wa.me/${p.whatsappE164}?text=${encodeURIComponent(whatsappMessage)}`
 
 export const contact = {
   // --- Ortak bilgiler (yer tutucu, gerçek bilgilerle değiştirin) ---
@@ -66,8 +54,8 @@ export const contact = {
     'Çankaya / Ankara',
   ],
   hours: [
-    { days: 'Pazartesi - Cuma', time: '09:00 - 20:00' },
-    { days: 'Cumartesi', time: '10:00 - 17:00' },
+    { days: 'Pazartesi - Cuma', time: '08:00 - 19:00' },
+    { days: 'Cumartesi', time: '08:00 - 18:00' },
     { days: 'Pazar', time: 'Kapalı' },
   ],
   /**
@@ -81,8 +69,6 @@ export const contact = {
   mapsLink:
     'https://www.google.com/maps/search/?api=1&query=' +
     encodeURIComponent('Mira Ofis, Beytepe Mahallesi, Kanuni Sultan Süleyman Bulvarı 5387. Cadde 15-A, Çankaya Ankara'),
-  /** https://formspree.io adresinden form oluşturup ID'yi buraya yazın (örn: "xyzabcde") */
-  formspreeId: 'PLACEHOLDER',
 }
 
 export const navLinks = [
